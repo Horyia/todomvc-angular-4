@@ -20,30 +20,35 @@ export class TodoDataService {
       todo.id = ++this.lastId;
     }
     this.todos.push(todo);
-    localStorage.setItem(String(todo.id), todo.title);
+    localStorage.setItem('todo', JSON.stringify(this.todos));
     return this;
   }
 
   // Simulate DELETE /todos/:id
   deleteTodoById(id: number): TodoDataService {
-    this.todos = this.todos
+    this.todos = (JSON.parse(localStorage.getItem("todo")))
       .filter(todo => todo.id !== id);
-      localStorage.removeItem(String(id));
+      localStorage.setItem('todo' ,JSON.stringify(this.todos));
     return this;
   }
 
   // Simulate PUT /todos/:id
   updateTodoById(id: number, values: Object = {}): Todo {
+    this.todos = (JSON.parse(localStorage.getItem("todo")))
     let todo = this.getTodoById(id);
     if (!todo) {
       return null;
     }
     Object.assign(todo, values);
+    localStorage.setItem('todo',JSON.stringify(this.todos))
     return todo;
   }
 
   // Simulate GET /todos
   getAllTodos(): Todo[] {
+    if (localStorage.getItem("todo")){
+      return(JSON.parse(localStorage.getItem("todo")));
+    }
     return this.todos;
   }
 
