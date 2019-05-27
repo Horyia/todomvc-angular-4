@@ -20,6 +20,7 @@ export class TodoDataService {
       todo.id = ++this.lastId;
     }
     this.todos.push(todo);
+    localStorage.setItem(String(todo.id), todo.title);
     return this;
   }
 
@@ -27,6 +28,7 @@ export class TodoDataService {
   deleteTodoById(id: number): TodoDataService {
     this.todos = this.todos
       .filter(todo => todo.id !== id);
+      localStorage.removeItem(String(id));
     return this;
   }
 
